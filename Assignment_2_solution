@@ -1,0 +1,384 @@
+-- =========================================================
+-- DATABASE MANAGEMENT SYSTEM
+-- Example 02
+-- Employee and Works Database
+-- =========================================================
+
+
+-- =========================================================
+-- STEP 1: CREATE DATABASE
+-- =========================================================
+
+CREATE DATABASE company_db;
+
+-- Select the database
+USE company_db;
+
+
+-- =========================================================
+-- STEP 2: CREATE EMPLOYEE TABLE
+-- =========================================================
+
+CREATE TABLE employee (
+    employee_name VARCHAR(50),
+    street VARCHAR(100),
+    city VARCHAR(50)
+);
+
+
+-- =========================================================
+-- STEP 3: CREATE WORKS TABLE
+-- =========================================================
+
+CREATE TABLE works (
+    employee_name VARCHAR(50),
+    company_name VARCHAR(50),
+    salary INT
+);
+
+
+-- =========================================================
+-- STEP 4: INSERT DATA INTO EMPLOYEE TABLE
+-- =========================================================
+
+INSERT INTO employee (employee_name, street, city)
+VALUES
+('Arif', '51 upashahar', 'Rajshahi'),
+('Sumon', '52 east', 'Moynamati'),
+('Sagor', 'Neemgachhi', 'Sirajgong'),
+('Abdul', 'Binodpur', 'Rajshahi'),
+('Himesh', 'Nazrul avenue', 'Dhaka'),
+('Amirul', 'Chawk bazar', 'Sylhet'),
+('Sajib', '99 north', 'Chittagong');
+
+
+-- Check employee table
+SELECT * FROM employee;
+
+
+-- =========================================================
+-- STEP 5: INSERT DATA INTO WORKS TABLE
+-- =========================================================
+
+INSERT INTO works (employee_name, company_name, salary)
+VALUES
+('Sumon', 'Agrani', 12000),
+('Abdul', 'Sonali', 13000),
+('Himesh', 'Agrani', 6000),
+('Amirul', 'Sonali', 20000),
+('Sagor', 'Sonali', 8000),
+('Arif', 'Janata', 13000),
+('Sajib', 'Janata', 9000);
+
+
+-- Check works table
+SELECT * FROM works;
+
+
+-- =========================================================
+-- QUESTION 2
+-- Find names of all employees who live in Rajshahi
+-- =========================================================
+
+SELECT employee_name
+FROM employee
+WHERE city = 'Rajshahi';
+
+
+-- =========================================================
+-- QUESTION 3
+-- Find names and street addresses of employees
+-- who live in Rajshahi
+-- =========================================================
+
+SELECT employee_name, street
+FROM employee
+WHERE city = 'Rajshahi';
+
+
+-- =========================================================
+-- QUESTION 4
+-- Find names of employees who work for:
+-- (i) Sonali
+-- (ii) Agrani
+-- (iii) Janata
+-- =========================================================
+
+-- (i) Employees working for Sonali
+SELECT employee_name
+FROM works
+WHERE company_name = 'Sonali';
+
+
+-- (ii) Employees working for Agrani
+SELECT employee_name
+FROM works
+WHERE company_name = 'Agrani';
+
+
+-- (iii) Employees working for Janata
+SELECT employee_name
+FROM works
+WHERE company_name = 'Janata';
+
+
+-- We can also find all three companies using IN
+SELECT employee_name
+FROM works
+WHERE company_name IN ('Sonali', 'Agrani', 'Janata');
+
+
+-- =========================================================
+-- QUESTION 5
+-- Find names and salary of employees who work for:
+-- (i) Sonali
+-- (ii) Agrani
+-- (iii) Janata
+-- =========================================================
+
+-- (i) Sonali
+SELECT employee_name, salary
+FROM works
+WHERE company_name = 'Sonali';
+
+
+-- (ii) Agrani
+SELECT employee_name, salary
+FROM works
+WHERE company_name = 'Agrani';
+
+
+-- (iii) Janata
+SELECT employee_name, salary
+FROM works
+WHERE company_name = 'Janata';
+
+
+-- =========================================================
+-- QUESTION 6
+-- Find names of employees whose salary is:
+-- (i) 12000
+-- (ii) >= 12000
+-- (iii) < 12000
+-- =========================================================
+
+-- (i) Salary = 12000
+SELECT employee_name
+FROM works
+WHERE salary = 12000;
+
+
+-- (ii) Salary >= 12000
+SELECT employee_name
+FROM works
+WHERE salary >= 12000;
+
+
+-- (iii) Salary < 12000
+SELECT employee_name
+FROM works
+WHERE salary < 12000;
+
+
+-- =========================================================
+-- QUESTION 7
+-- Find names and company of employees whose salary is:
+-- (i) 12000
+-- (ii) >= 12000
+-- (iii) < 12000
+-- =========================================================
+
+-- (i) Salary = 12000
+SELECT employee_name, company_name
+FROM works
+WHERE salary = 12000;
+
+
+-- (ii) Salary >= 12000
+SELECT employee_name, company_name
+FROM works
+WHERE salary >= 12000;
+
+
+-- (iii) Salary < 12000
+SELECT employee_name, company_name
+FROM works
+WHERE salary < 12000;
+
+
+-- =========================================================
+-- QUESTION 8
+-- Find names, streets and cities of employees
+-- who work for Agrani
+--
+-- We need both employee and works tables,
+-- so we use JOIN.
+-- =========================================================
+
+SELECT e.employee_name, e.street, e.city
+FROM employee e
+JOIN works w
+ON e.employee_name = w.employee_name
+WHERE w.company_name = 'Agrani';
+
+
+-- =========================================================
+-- QUESTION 9
+-- Find names, streets and cities of employees
+-- who earn >= 10000
+-- =========================================================
+
+SELECT e.employee_name, e.street, e.city
+FROM employee e
+JOIN works w
+ON e.employee_name = w.employee_name
+WHERE w.salary >= 10000;
+
+
+-- =========================================================
+-- QUESTION 10
+-- Find names, company and salary of employees
+-- who live in Rajshahi
+-- =========================================================
+
+SELECT e.employee_name, w.company_name, w.salary
+FROM employee e
+JOIN works w
+ON e.employee_name = w.employee_name
+WHERE e.city = 'Rajshahi';
+
+
+-- =========================================================
+-- QUESTION 11
+-- Find names, streets, cities and companies
+-- of employees who earn >= 10000
+-- =========================================================
+
+SELECT e.employee_name, e.street, e.city, w.company_name
+FROM employee e
+JOIN works w
+ON e.employee_name = w.employee_name
+WHERE w.salary >= 10000;
+
+
+-- =========================================================
+-- QUESTION 12
+-- Find names, streets and cities of employees
+-- who work for Sonali AND earn more than 12000
+-- =========================================================
+
+SELECT e.employee_name, e.street, e.city
+FROM employee e
+JOIN works w
+ON e.employee_name = w.employee_name
+WHERE w.company_name = 'Sonali'
+AND w.salary > 12000;
+
+
+-- =========================================================
+-- QUESTION 13
+-- Find all employees who do NOT work for Sonali
+-- =========================================================
+
+SELECT employee_name
+FROM works
+WHERE company_name <> 'Sonali';
+
+
+-- =========================================================
+-- QUESTION 14
+-- Modify the database so that Arif now lives in Natore
+-- =========================================================
+
+UPDATE employee
+SET city = 'Natore'
+WHERE employee_name = 'Arif';
+
+
+-- Check the updated information
+SELECT *
+FROM employee
+WHERE employee_name = 'Arif';
+
+
+-- =========================================================
+-- QUESTION 15
+-- Give all employees of Agrani Bank a 10% salary raise
+-- =========================================================
+
+UPDATE works
+SET salary = salary * 1.10
+WHERE company_name = 'Agrani';
+
+
+-- Check updated Agrani employees
+SELECT *
+FROM works
+WHERE company_name = 'Agrani';
+
+
+-- =========================================================
+-- QUESTION 16
+-- Delete all records for Sagor in employee table
+-- =========================================================
+
+DELETE FROM employee
+WHERE employee_name = 'Sagor';
+
+
+-- Check employee table after deletion
+SELECT * FROM employee;
+
+
+-- =========================================================
+-- QUESTION 17
+-- Add a manager column in the company table
+--
+-- NOTE:
+-- The original question mentions a "company" table,
+-- but our database does not have one yet.
+-- So first we create the company table.
+-- =========================================================
+
+
+-- Create company table
+CREATE TABLE company (
+    company_name VARCHAR(50)
+);
+
+
+-- Insert company names
+INSERT INTO company (company_name)
+VALUES
+('Agrani'),
+('Sonali'),
+('Janata');
+
+
+-- Add manager column
+ALTER TABLE company
+ADD manager VARCHAR(50);
+
+
+-- Check company table
+SELECT * FROM company;
+
+
+-- =========================================================
+-- FINAL CHECK
+-- =========================================================
+
+-- Show all tables
+SHOW TABLES;
+
+
+-- Show employee table
+SELECT * FROM employee;
+
+
+-- Show works table
+SELECT * FROM works;
+
+
+-- Show company table
+SELECT * FROM company;
